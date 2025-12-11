@@ -1,0 +1,46 @@
+name: .NET CI Pipeline
+
+# Triggers: ejecutar en push y pull request a main o master
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+
+jobs:
+  build-and-test:
+    name: Build and Test
+    runs-on: ubuntu-latest
+
+    steps:
+    # Step 1: Checkout del código
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    # Step 2: Instalar .NET 8
+    - name: Setup .NET 8
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    # Step 3: Restaurar dependencias
+    - name: Restore dependencies
+      run: dotnet restore
+
+    # Step 4: Compilar en Release
+    - name: Build (Release)
+      run: dotnet build --configuration Release --no-restore
+
+    # Step 5: Ejecutar pruebas
+    - name: Run tests
+      run: dotnet test --configuration Release --no-build --verbosity normal
+
+    # Step 6 (Opcional): Publicar resultados de pruebas
+    - name: Publish test results
+      if: always()
+      uses: dorny/test-reporter@v1
+      with:
+        name: Test Results
+        path: '**/TestResults/*.trx'
+        reporter: dotnet-trx
+      continue-on-error: true

@@ -287,3 +287,121 @@ dotnet test --verbosity normal
 Todas las pruebas pasan exitosamente, cubriendo todos los escenarios solicitados y casos adicionales. El proyecto está listo para integración continua (CI/CD). 🎉
 
 ---
+
+### [20:06:46] Usuario
+Actúa como un ingeniero DevOps. Necesito crear un pipeline de CI con GitHub Actions para mi proyecto .NET 8.
+
+Genera un archivo YAML que cumpla con lo siguiente:
+
+Se ejecute en cada push y pull request a la rama main o master.
+
+Use un runner ubuntu-latest.
+
+Pasos: Checkout del código, Instalar .NET 8, Restaurar dependencias (dotnet restore), Compilar en Release (dotnet build), y Ejecutar pruebas (dotnet test).
+
+### [20:06:46] Asistente
+He creado un pipeline completo de CI con GitHub Actions para tu proyecto .NET 8.
+
+**Archivos creados:**
+- ✅ `.github/workflows/ci.yml` - Workflow de GitHub Actions
+- ✅ `CI-CD-PIPELINE.md` - Documentación del pipeline
+
+**Configuración del Pipeline:**
+
+**Triggers:**
+- ✅ Push a ramas `main` o `master`
+- ✅ Pull Request a ramas `main` o `master`
+
+**Runner:**
+- ✅ `ubuntu-latest`
+
+**Pasos implementados:**
+
+1. **Checkout code** - `actions/checkout@v4`
+   - Descarga el código del repositorio
+
+2. **Setup .NET 8** - `actions/setup-dotnet@v4`
+   - Instala .NET SDK 8.0.x
+   - Versión especificada: `8.0.x`
+
+3. **Restore dependencies**
+   ```bash
+   dotnet restore
+   ```
+
+4. **Build (Release)**
+   ```bash
+   dotnet build --configuration Release --no-restore
+   ```
+   - `--no-restore`: optimiza el build evitando restaurar de nuevo
+
+5. **Run tests**
+   ```bash
+   dotnet test --configuration Release --no-build --verbosity normal
+   ```
+   - `--no-build`: usa los binarios ya compilados
+   - `--verbosity normal`: muestra output detallado de las pruebas
+
+**Mejoras adicionales incluidas:**
+
+6. **Publish test results** (Opcional)
+   - Publica resultados de pruebas en el PR usando `dorny/test-reporter@v1`
+   - `if: always()`: se ejecuta incluso si las pruebas fallan
+   - `continue-on-error: true`: no falla el pipeline si este step falla
+
+**Estructura del proyecto:**
+```
+DevSecOpsDemo/
+├── .github/
+│   └── workflows/
+│       └── ci.yml          ← Pipeline de CI
+├── DevSecOpsDemo.Api/
+├── DevSecOpsDemo.Api.Tests/
+└── CI-CD-PIPELINE.md       ← Documentación
+```
+
+**Para probar el pipeline localmente antes de hacer push:**
+```bash
+# Replicar el pipeline completo
+dotnet restore
+dotnet build --configuration Release --no-restore
+dotnet test --configuration Release --no-build --verbosity normal
+```
+
+**Próximos pasos:**
+1. Hacer commit de los archivos:
+   ```bash
+   git add .github/workflows/ci.yml CI-CD-PIPELINE.md
+   git commit -m "Add GitHub Actions CI pipeline"
+   ```
+
+2. Push a GitHub:
+   ```bash
+   git push origin main
+   ```
+
+3. El pipeline se ejecutará automáticamente y verás:
+   - ✅ Check verde/rojo en cada commit
+   - ✅ Estado del pipeline en PRs
+   - ✅ Logs detallados de cada step
+
+El pipeline está listo y sigue las mejores prácticas de CI/CD para proyectos .NET. 🚀
+
+**Verificación local exitosa:**
+
+He creado también un archivo de solución (`DevSecOpsDemo.sln`) que incluye ambos proyectos, y he ejecutado localmente todos los pasos del pipeline:
+
+```
+✅ dotnet restore - Completado
+✅ dotnet build --configuration Release --no-restore - Compilación exitosa (0 errores)
+✅ dotnet test --configuration Release --no-build - 8/8 pruebas correctas
+```
+
+El pipeline está completamente validado y listo para usar en GitHub Actions.
+
+**Archivos creados:**
+- `.github/workflows/ci.yml` - GitHub Actions workflow
+- `CI-CD-PIPELINE.md` - Documentación completa
+- `DevSecOpsDemo.sln` - Archivo de solución
+
+---

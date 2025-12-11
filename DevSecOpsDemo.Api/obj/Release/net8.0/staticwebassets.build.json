@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "ekOfLAuoAw+uNAf0MFG8B6J3XgawFkqOVg8HBlMNn78=",
+  "Source": "DevSecOpsDemo.Api",
+  "BasePath": "_content/DevSecOpsDemo.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
